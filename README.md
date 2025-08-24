@@ -1,55 +1,68 @@
-<<<<<<< HEAD
-# Welcome to your Expo app 👋
+# 🌱 Seikatsu
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Seikatsu (生活) — meaning "life" in Japanese — is a personal growth and productivity application designed to help users track their daily activities, emotions, and habits.  
+It provides insights, analytics, and an AI-powered behavioral analysis system to encourage a balanced and fulfilling lifestyle.  
 
-## Get started
+---
 
-1. Install dependencies
+## ✨ Features
 
-   ```bash
-   npm install
-   ```
+- 📊 **Daily Journaling** — Log activities, achievements, mistakes, nutrition, and sleep.
+- 💡 **AI Analysis** — NLP-powered insights on habits, mood, and performance.
+- 🎭 **Emotion Tracking** — Record emotions like Happy, Sad, Angry, Scared, Confused.
+- 🏆 **Gamified XP System** — Earn XP by completing milestones in categories:
+  - Strength  
+  - Learning  
+  - Relationship  
+  - Spirituality  
+  - Career  
+  - Sleep  
+  - Nutrition
+- 🛒 **Marketplace** — Unlock custom themes using earned XP.
+- 📈 **Insights Dashboard** — Animated progress bars, charts, and visual reports.
+- 🔔 **Reminders & Notifications** — Stay consistent with your goals.
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 🛠️ Tech Stack
 
-In the output, you'll find options to open the app in a
+### Frontend (Mobile App)
+- ⚛️ React Native (with Expo)
+- 🎨 NativeWind (Tailwind for React Native)
+- 📱 Expo Router (navigation)
+- 📊 Recharts & Animated APIs (for charts and progress bars)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Backend
+- 🚀 FastAPI (Python)
+- 🤖 NLP for text analysis & insights
+- 🗄️ PostgreSQL (database)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
-
-When you're ready, run:
+## 📂 Project Structure
 
 ```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-=======
-# Seikatsu
-Personal Growth Tracker
->>>>>>> 30747b7a4f4a8277deb61ee7c150898c979b02af
+seikatsu/
+│
+├── app/                  # Expo Router structure
+│   ├── (tabs)/           # Bottom navigation tabs
+│   │   ├── index.tsx     # Home screen
+│   │   ├── journal.tsx   # Journal screen
+│   │   ├── insights.tsx  # Insights screen
+│   │   └── market.tsx    # Marketplace screen
+│   │
+│   └── _layout.tsx       # Root layout for navigation
+│
+├── components/           # Reusable UI components
+│   ├── HeaderBar.tsx     # Top header bar
+│   └── ...
+│
+├── constants/            # Assets, icons, and images
+│
+├── backend/              # FastAPI backend
+│   ├── main.py           # Entry point
+│   ├── models.py         # Database models
+│   ├── routes/           # API endpoints
+│   └── nlp/              # Text processing pipeline
+│
+└── README.md             # Project documentation
