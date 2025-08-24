@@ -1,6 +1,6 @@
 # 🌱 Seikatsu
 
-Seikatsu (生活) — meaning "life" in Japanese — is a personal growth and productivity application designed to help users track their daily activities, emotions, and habits.  
+Seikatsu (生活) — meaning "livelihood" in Japanese — is a personal growth and productivity application designed to help users track their daily activities, emotions, and habits.  
 It provides insights, analytics, and an AI-powered behavioral analysis system to encourage a balanced and fulfilling lifestyle.  
 
 ---
