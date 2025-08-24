@@ -66,7 +66,7 @@ seikatsu/
 │   └── nlp/              # Text processing pipeline
 │
 └── README.md             # Project documentation
-
+```
 
 🚀 Getting Started
 Prerequisites
