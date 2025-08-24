@@ -46,6 +46,7 @@ seikatsu/
 │
 ├── app/                  # Expo Router structure
 │   ├── (tabs)/           # Bottom navigation tabs
+│   │   ├── _layout.tsx
 │   │   ├── index.tsx     # Home screen
 │   │   ├── journal.tsx   # Journal screen
 │   │   ├── insights.tsx  # Insights screen
@@ -55,7 +56,12 @@ seikatsu/
 │
 ├── components/           # Reusable UI components
 │   ├── HeaderBar.tsx     # Top header bar
-│   └── ...
+│   ├── home/
+│   │   ├── HomeTabs.tsx
+│   │   ├── Overview.tsx
+│   │   ├── Tasks.tsx
+│   │   ├── Calendar.tsx
+│   │   └── Stats.tsx
 │
 ├── constants/            # Assets, icons, and images
 │
