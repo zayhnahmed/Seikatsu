@@ -27,7 +27,11 @@ const CircularProgress: React.FC<CircularProgressProps> = ({ progress, size = 50
   const strokeDashoffset = circumference - (progress / 100) * circumference;
   
   return (
-    <View className="items-center justify-center relative">
+    <View style={{
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative'
+    }}>
       <Svg 
         width={size} 
         height={size} 
@@ -53,8 +57,20 @@ const CircularProgress: React.FC<CircularProgressProps> = ({ progress, size = 50
           strokeLinecap="round"
         />
       </Svg>
-      <View className="absolute inset-0 items-center justify-center">
-        <Text className="text-xs font-bold text-gray-800">
+      <View style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Text style={{
+          fontSize: 12,
+          fontWeight: 'bold',
+          color: '#333'
+        }}>
           {Math.round(progress)}%
         </Text>
       </View>
@@ -72,62 +88,85 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
   variant = "default",
   onPress 
 }) => {
-  const getCardClasses = () => {
-    const baseClasses = "rounded-2xl p-4 m-2 flex-1 border shadow-sm";
-    
-    switch (variant) {
-      case 'primary':
-        return `${baseClasses} bg-blue-500 border-blue-700`;
-      case 'accent':
-        return `${baseClasses} bg-yellow-100 border-yellow-200`;
-      case 'success':
-        return `${baseClasses} bg-green-100 border-green-200`;
-      case 'secondary':
-        return `${baseClasses} bg-gray-200 border-gray-300`;
-      default:
-        return `${baseClasses} bg-gray-50 border-gray-200`;
+  const cardStyles = {
+    default: {
+      backgroundColor: '#FAFAFA',
+      borderColor: '#E5E5E5',
+    },
+    primary: {
+      backgroundColor: '#007AFF',
+      borderColor: '#0056CC',
+    },
+    accent: {
+      backgroundColor: '#F79240',
+      borderColor: '#EB6F0A',
+    },
+    success: {
+      backgroundColor: '#4DD080',
+      borderColor: '#009963',
+    },
+    secondary: {
+      backgroundColor: 'rgba(108, 117, 125, 0.2)',
+      borderColor: 'rgba(108, 117, 125, 0.3)',
     }
   };
 
-  const getTitleClasses = () => {
-    const baseClasses = "text-sm font-medium flex-1";
-    
-    switch (variant) {
-      case 'primary':
-        return `${baseClasses} text-white`;
-      default:
-        return `${baseClasses} text-gray-800`;
-    }
+  const textStyles = {
+    default: { color: '#333' },
+    primary: { color: '#FFFFFF' },
+    accent: { color: '#333' },
+    success: { color: '#333' },
+    secondary: { color: '#333' }
   };
 
-  const getValueClasses = () => {
-    const baseClasses = "text-xl font-bold mb-1";
-    
-    switch (variant) {
-      case 'primary':
-        return `${baseClasses} text-white`;
-      default:
-        return `${baseClasses} text-gray-800`;
-    }
+  const subtitleStyles = {
+    default: { color: 'rgba(51, 51, 51, 0.6)' },
+    primary: { color: 'rgba(255, 255, 255, 0.8)' },
+    accent: { color: 'rgba(51, 51, 51, 0.7)' },
+    success: { color: 'rgba(51, 51, 51, 0.7)' },
+    secondary: { color: 'rgba(51, 51, 51, 0.7)' }
   };
 
-  const getSubtitleClasses = () => {
-    const baseClasses = "text-xs";
-    
-    switch (variant) {
-      case 'primary':
-        return `${baseClasses} text-white/80`;
-      default:
-        return `${baseClasses} text-gray-600`;
-    }
+  const cardStyle = {
+    ...cardStyles[variant],
+    borderRadius: 16,
+    padding: 16,
+    margin: 8,
+    flex: 1,
+    minWidth: 160,
+    borderWidth: 1,
+    // Shadow for iOS
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    // Elevation for Android
+    elevation: 2,
   };
 
   const CardContent = () => (
-    <View className={getCardClasses()} style={{ minWidth: 160 }}>
-      <View className="flex-row items-center justify-between mb-3">
-        <View className="flex-row items-center flex-1">
-          <Text className="text-xl mr-2">{emoji}</Text>
-          <Text className={getTitleClasses()}>
+    <View style={cardStyle}>
+      <View style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 12
+      }}>
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          flex: 1
+        }}>
+          <Text style={{ fontSize: 20, marginRight: 8 }}>{emoji}</Text>
+          <Text style={{
+            fontSize: 14,
+            fontWeight: '500',
+            flex: 1,
+            ...textStyles[variant]
+          }}>
             {title}
           </Text>
         </View>
@@ -135,11 +174,19 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
           <CircularProgress progress={progress} size={50} strokeWidth={4} />
         )}
       </View>
-      <Text className={getValueClasses()}>
+      <Text style={{
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 4,
+        ...textStyles[variant]
+      }}>
         {value}
       </Text>
       {subtitle && (
-        <Text className={getSubtitleClasses()}>
+        <Text style={{
+          fontSize: 12,
+          ...subtitleStyles[variant]
+        }}>
           {subtitle}
         </Text>
       )}
