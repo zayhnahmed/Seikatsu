@@ -67,17 +67,20 @@ const mockData = {
 const Insights = () => {
   return (
     <View className="flex-1 bg-primary">
-        <ScrollView className="flex-1 bg-light-50">
+        <ScrollView 
+                className="flex-1"
+                contentContainerStyle={{ paddingTop: 160, paddingBottom: 80 }}
+                showsVerticalScrollIndicator={false}
+              >
         {/* Header */}
-        <View className="pt-40 pb-4 px-4">
-            <Text className="text-2xl font-bold text-primary">Insights</Text>
-            <Text className="text-sm text-primary/60 mt-1">Your personal growth analytics</Text>
+        <View className="px-6 pb-8">
+            <Text className="text-2xl font-bold text-light-100">Insights</Text>
         </View>
 
         {/* 1. Summary Cards Row */}
         <View className="flex-row px-4 mb-4">
             <SummaryCard 
-            title="XP Progress"
+            title="XP"
             value={`${mockData.xp} XP`}
             subtitle={`Level ${mockData.level} → ${mockData.level + 1}`}
             emoji="⚡"
