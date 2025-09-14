@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
 import models, schemas
+from typing import List, Optional, Tuple, Sequence
 
 # ===================== #
 #  PASSWORD HASHING SETUP
@@ -31,7 +32,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     db_user = models.User(
         username=user.username,
         email=user.email,
-        hashed_password=get_password_hash(user.password),  # FIXED: Hash password
+        hashed_password=get_password_hash(user.password),
         created_at=datetime.utcnow()
     )
     db.add(db_user)
@@ -64,7 +65,7 @@ def create_journal(db: Session, journal: schemas.JournalCreate, user_id: int):
     db_journal = models.Journal(
         title=journal.title,
         content=journal.content,
-        mood=journal.mood,  # Include mood
+        mood=journal.mood,
         user_id=user_id,
         created_at=datetime.utcnow()
     )
@@ -153,7 +154,7 @@ def mark_task_complete(db: Session, task_id: int):
     db_task = get_task(db, task_id)
     if db_task and not db_task.is_completed:
         db_task.is_completed = True
-        db_task.completed_at = datetime.utcnow()  # FIXED: Set completion timestamp
+        db_task.completed_at = datetime.utcnow()  # type: ignore
         db.commit()
         db.refresh(db_task)
     return db_task
@@ -163,7 +164,7 @@ def mark_task_incomplete(db: Session, task_id: int):
     db_task = get_task(db, task_id)
     if db_task and db_task.is_completed:
         db_task.is_completed = False
-        db_task.completed_at = None  # FIXED: Clear completion timestamp
+        db_task.completed_at = None  # type: ignore
         db.commit()
         db.refresh(db_task)
     return db_task
@@ -180,7 +181,7 @@ def update_task(db: Session, task_id: int, task_update: schemas.TaskUpdate):
         if task_update.xp_reward is not None:
             db_task.xp_reward = task_update.xp_reward
         if task_update.due_date is not None:
-            db_task.due_date = task_update.due_date
+            db_task.due_date = task_update.due_date  # type: ignore
             
         db.commit()
         db.refresh(db_task)
@@ -246,7 +247,7 @@ def calculate_level_from_xp(total_xp: int) -> int:
     
     return level - 1
 
-def get_level_thresholds(level: int) -> tuple[int, int]:
+def get_level_thresholds(level: int) -> Tuple[int, int]:
     """Get XP thresholds for current and next level"""
     current_level_threshold = sum((i - 1) * 100 for i in range(2, level + 1))
     next_level_threshold = current_level_threshold + level * 100
@@ -264,8 +265,8 @@ def update_user_xp(db: Session, user_id: int, xp_gained: int):
     db_stats.total_xp += xp_gained
     
     # Recalculate level
-    new_level = calculate_level_from_xp(db_stats.total_xp)
-    old_level = db_stats.level
+    new_level = calculate_level_from_xp(int(db_stats.total_xp))
+    old_level = int(db_stats.level)
     db_stats.level = new_level
     
     db.commit()
@@ -354,7 +355,6 @@ def get_recent_activity(db: Session, user_id: int, days: int = 7):
                        .order_by(models.Journal.created_at.desc())\
                        .all()
     
-    # FIXED: Use completed_at for recent completed tasks
     recent_completed_tasks = db.query(models.Task)\
                             .filter(models.Task.user_id == user_id,
                                    models.Task.is_completed == True,
@@ -363,8 +363,8 @@ def get_recent_activity(db: Session, user_id: int, days: int = 7):
                             .all()
     
     return schemas.RecentActivity(
-        journals=recent_journals,
-        completed_tasks=recent_completed_tasks,
+        journals=recent_journals,  # type: ignore
+        completed_tasks=recent_completed_tasks,  # type: ignore
         period_days=days
     )
 

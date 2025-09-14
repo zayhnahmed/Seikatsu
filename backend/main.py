@@ -135,7 +135,7 @@ def mark_task_complete(task_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Task not found")
     
     # Award XP for completing task
-    xp_gained = task.xp_reward or 10
+    xp_gained = int(task.xp_reward) if task.xp_reward else 10
     crud.update_user_xp(db, user_id=1, xp_gained=xp_gained)  # temporary hardcode
     
     return task
@@ -148,8 +148,9 @@ def mark_task_incomplete(task_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Task not found")
     
     # Subtract XP if task was previously completed
-    if task.is_completed:
-        xp_lost = -(task.xp_reward or 10)  # Negative XP to subtract
+    if bool(task.is_completed):
+        xp_reward = getattr(task, 'xp_reward', 10) or 10
+        xp_lost = -int(xp_reward)  # Negative XP to subtract
         crud.update_user_xp(db, user_id=1, xp_gained=xp_lost)
     
     updated_task = crud.mark_task_incomplete(db, task_id=task_id)
@@ -290,7 +291,7 @@ def signup(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
 def login(username: str, password: str, db: Session = Depends(get_db)):
     """User login (placeholder - will implement JWT later)"""
     user = crud.get_user_by_username(db, username=username)
-    if user and crud.verify_password(password, user.hashed_password):
+    if user and crud.verify_password(password, str(user.hashed_password)):
         return schemas.MessageResponse(
             message="Login successful",
             detail="JWT token generation coming soon!"
