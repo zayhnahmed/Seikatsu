@@ -1,32 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  User, 
-  Mail, 
-  Lock, 
-  Link, 
-  Brain, 
-  Globe, 
-  Bell, 
-  Target, 
-  BookOpen, 
-  Cloud, 
-  Shield, 
-  Camera, 
-  Eye, 
-  Smartphone, 
-  Activity, 
-  Download, 
-  Palette, 
-  Type, 
-  HelpCircle, 
-  MessageCircle, 
-  FileText, 
-  Info, 
-  LogOut, 
-  Trash2,
+import {
+  Activity,
+  Bell,
+  BookOpen,
+  Brain,
+  Camera,
   ChevronRight,
-  Loader
+  Cloud,
+  Download,
+  Eye,
+  FileText,
+  Globe,
+  HelpCircle,
+  Info,
+  Link,
+  Loader,
+  Lock,
+  LogOut,
+  Mail,
+  MessageCircle,
+  Palette,
+  Smartphone,
+  Target,
+  Trash2,
+  Type,
+  User
 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 // Color palette constants
 const COLORS = {
