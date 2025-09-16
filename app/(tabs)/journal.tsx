@@ -130,12 +130,12 @@ const Journal: React.FC = () => {
         <View className="px-6 pb-8">
           {/* Header Section */}
           <View className="mb-6">
-            <Text className="text-2xl font-bold text-light-100 mb-4">Daily Journal</Text>
+            <Text className="text-2xl font-bold text-light-100 mb-4">Journal</Text>
             
             {/* Date Picker */}
             <TouchableOpacity
               onPress={() => setShowDatePicker(true)}
-              className="bg-white rounded-xl p-4 mb-4 border border-light-300"
+              className="bg-light-200 rounded-xl p-4 mb-1 border border-light-300"
             >
               <Text className="text-primary font-semibold">
                 📅 {formatDate(selectedDate)}
@@ -164,7 +164,7 @@ const Journal: React.FC = () => {
                     className={`p-3 rounded-xl border-2 mb-2 min-w-[60px] items-center ${
                       selectedMood === mood.value
                         ? 'border-accent bg-accent/20'
-                        : 'border-light-300 bg-white'
+                        : 'border-light-300 bg-light-200'
                     }`}
                   >
                     <Text className="text-2xl mb-1">{mood.emoji}</Text>
@@ -182,7 +182,7 @@ const Journal: React.FC = () => {
           {/* Daily Entry Form */}
           <View className="gap-6">
             {/* Strength */}
-            <View className="bg-white rounded-xl p-4 border border-light-300">
+            <View className="bg-light-200 rounded-xl p-4 border border-light-300">
               <Text className="text-lg font-semibold text-primary mb-2">
                 💪 Strength
               </Text>
@@ -201,7 +201,7 @@ const Journal: React.FC = () => {
             </View>
 
             {/* Learning */}
-            <View className="bg-white rounded-xl p-4 border border-light-300">
+            <View className="bg-light-200 rounded-xl p-4 border border-light-300">
               <Text className="text-lg font-semibold text-primary mb-2">
                 🧠 Learning
               </Text>
@@ -220,7 +220,7 @@ const Journal: React.FC = () => {
             </View>
 
             {/* Relationships */}
-            <View className="bg-white rounded-xl p-4 border border-light-300">
+            <View className="bg-light-200 rounded-xl p-4 border border-light-300">
               <Text className="text-lg font-semibold text-primary mb-2">
                 ❤️ Relationships
               </Text>
@@ -239,7 +239,7 @@ const Journal: React.FC = () => {
             </View>
 
             {/* Spirituality */}
-            <View className="bg-white rounded-xl p-4 border border-light-300">
+            <View className="bg-light-200 rounded-xl p-4 border border-light-300">
               <Text className="text-lg font-semibold text-primary mb-2">
                 🧘 Spirituality
               </Text>
@@ -258,7 +258,7 @@ const Journal: React.FC = () => {
             </View>
 
             {/* Career */}
-            <View className="bg-white rounded-xl p-4 border border-light-300">
+            <View className="bg-light-200 rounded-xl p-4 border border-light-300">
               <Text className="text-lg font-semibold text-primary mb-2">
                 🚀 Career
               </Text>
@@ -277,7 +277,7 @@ const Journal: React.FC = () => {
             </View>
 
             {/* Sleep */}
-            <View className="bg-white rounded-xl p-4 border border-light-300">
+            <View className="bg-light-200 rounded-xl p-4 border border-light-300">
               <Text className="text-lg font-semibold text-primary mb-2">
                 😴 Sleep
               </Text>
@@ -312,7 +312,7 @@ const Journal: React.FC = () => {
             </View>
 
             {/* Nutrition */}
-            <View className="bg-white rounded-xl p-4 border border-light-300">
+            <View className="bg-light-200 rounded-xl p-4 border border-light-300">
               <Text className="text-lg font-semibold text-primary mb-2">
                 🥗 Nutrition
               </Text>
@@ -331,7 +331,7 @@ const Journal: React.FC = () => {
             </View>
 
             {/* Notes / Reflection */}
-            <View className="bg-white rounded-xl p-4 border border-light-300">
+            <View className="bg-light-200 rounded-xl p-4 border border-light-300">
               <Text className="text-lg font-semibold text-primary mb-2">
                 📝 Reflection
               </Text>

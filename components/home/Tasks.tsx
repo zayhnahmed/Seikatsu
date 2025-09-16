@@ -8,7 +8,7 @@ interface Task {
   title: string;
   completed: boolean;
   priority: 1 | 2 | 3 | 4;
-}
+} 
 
 interface PriorityConfig {
   label: string;
