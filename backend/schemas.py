@@ -119,7 +119,17 @@ class Level(LevelBase):
         from_attributes = True
 
 # ===================== #
-#  USER / AUTH SCHEMAS
+#  AUTHENTICATION SCHEMAS
+# ===================== #
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
+
+# ===================== #
+#  USER SCHEMAS
 # ===================== #
 class UserBase(BaseModel):
     username: str
