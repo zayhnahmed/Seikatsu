@@ -94,7 +94,7 @@ def complete_task(
         raise
 
 
-def uncomplete_task(db: Session, user_id: int, task_id: int) -> Dict:
+def incomplete_task(db: Session, user_id: int, task_id: int) -> Dict:
     """
     Mark a task as incomplete (undo completion).
     Note: Does not deduct XP to avoid abuse.
@@ -102,7 +102,7 @@ def uncomplete_task(db: Session, user_id: int, task_id: int) -> Dict:
     Args:
         db: Database session
         user_id: User ID
-        task_id: Task ID to uncomplete
+        task_id: Task ID to incomplete
         
     Returns:
         Dictionary with task details
@@ -140,7 +140,7 @@ def uncomplete_task(db: Session, user_id: int, task_id: int) -> Dict:
         
     except Exception as e:
         db.rollback()
-        logger.error(f"Error uncompleting task {task_id} for user {user_id}: {str(e)}")
+        logger.error(f"Error incomplete task {task_id} for user {user_id}: {str(e)}")
         raise
 
 
