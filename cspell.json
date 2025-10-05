@@ -2,16 +2,14 @@
   "version": "0.2",
   "language": "en",
   "words": [
-    "dotenv",
-    "pydantic",
-    "uvicorn",
     "alembic",
-    "sqlalchemy",
-    "psycopg2",
+    "dotenv",
     "fastapi",
-    "mako"
+    "isnot",
+    "mako",
+    "psycopg2",
+    "pydantic",
+    "sqlalchemy",
+    "uvicorn"
   ]
 }
-
-
-
