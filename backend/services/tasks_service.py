@@ -4,14 +4,19 @@ Handles task completion logic, XP rewards, streaks, and task management.
 """
 
 from sqlalchemy.orm import Session
-from sqlalchemy import and_
-from datetime import datetime, timedelta
-from typing import List, Dict, Optional
+from sqlalchemy import and_, func
+from datetime import datetime, timedelta, timezone
+from typing import List, Dict, Optional, cast
 import logging
 from models import Task, User
 from services.xp_manager import add_xp, XP_REWARDS
 
 logger = logging.getLogger(__name__)
+
+
+def get_utc_now() -> datetime:
+    """Get current UTC time (timezone-aware)."""
+    return datetime.now(timezone.utc)
 
 
 def complete_task(
@@ -51,7 +56,7 @@ def complete_task(
         
         # Mark as completed
         task.is_completed = True
-        task.completed_at = datetime.utcnow()
+        task.completed_at = get_utc_now()  # type: ignore[assignment]
         
         # Award XP
         xp_reward = task.xp_reward or XP_REWARDS["task_completion"]
@@ -119,7 +124,7 @@ def uncomplete_task(db: Session, user_id: int, task_id: int) -> Dict:
             }
         
         task.is_completed = False
-        task.completed_at = None
+        task.completed_at = None  # type: ignore[assignment]
         
         db.commit()
         db.refresh(task)
@@ -164,7 +169,7 @@ def reset_daily_tasks(db: Session) -> Dict:
         
         # Example implementation (commented out until model is updated):
         """
-        today = datetime.utcnow().date()
+        today = get_utc_now().date()
         
         # Find all daily recurring tasks that were completed yesterday
         tasks_to_reset = db.query(Task).filter(
@@ -177,8 +182,8 @@ def reset_daily_tasks(db: Session) -> Dict:
         reset_count = 0
         for task in tasks_to_reset:
             task.is_completed = False
-            task.completed_at = None
-            task.last_reset = datetime.utcnow()
+            task.completed_at = None  # type: ignore[assignment]
+            task.last_reset = get_utc_now()  # type: ignore[assignment]
             reset_count += 1
         
         db.commit()
@@ -209,15 +214,15 @@ def get_due_tasks(db: Session, user_id: int, days_ahead: int = 7) -> List[Task]:
         List of Task objects
     """
     try:
-        now = datetime.utcnow()
+        now = get_utc_now()
         end_date = now + timedelta(days=days_ahead)
         
         tasks = db.query(Task).filter(
             Task.user_id == user_id,
             Task.is_completed == False,
             Task.due_date.isnot(None),
-            Task.due_date >= now,
-            Task.due_date <= end_date
+            Task.due_date >= now,  # type: ignore[operator]
+            Task.due_date <= end_date  # type: ignore[operator]
         ).order_by(Task.due_date).all()
         
         logger.info(f"Found {len(tasks)} upcoming tasks for user {user_id}")
@@ -241,13 +246,13 @@ def get_overdue_tasks(db: Session, user_id: int) -> List[Task]:
         List of overdue Task objects
     """
     try:
-        now = datetime.utcnow()
+        now = get_utc_now()
         
         tasks = db.query(Task).filter(
             Task.user_id == user_id,
             Task.is_completed == False,
             Task.due_date.isnot(None),
-            Task.due_date < now
+            Task.due_date < now  # type: ignore[operator]
         ).order_by(Task.due_date).all()
         
         logger.info(f"Found {len(tasks)} overdue tasks for user {user_id}")
@@ -271,22 +276,22 @@ def get_today_tasks(db: Session, user_id: int) -> Dict:
         Dictionary with today's tasks categorized
     """
     try:
-        today_start = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+        today_start = get_utc_now().replace(hour=0, minute=0, second=0, microsecond=0)
         today_end = today_start + timedelta(days=1)
         
         # Tasks due today
         due_today = db.query(Task).filter(
             Task.user_id == user_id,
-            Task.due_date >= today_start,
-            Task.due_date < today_end
+            Task.due_date >= today_start,  # type: ignore[operator]
+            Task.due_date < today_end  # type: ignore[operator]
         ).all()
         
         # Tasks completed today
         completed_today = db.query(Task).filter(
             Task.user_id == user_id,
             Task.is_completed == True,
-            Task.completed_at >= today_start,
-            Task.completed_at < today_end
+            Task.completed_at >= today_start,  # type: ignore[operator]
+            Task.completed_at < today_end  # type: ignore[operator]
         ).all()
         
         incomplete = [t for t in due_today if not t.is_completed]
@@ -377,30 +382,33 @@ def get_task_statistics(db: Session, user_id: int, days: int = 30) -> Dict:
         Dictionary with task statistics
     """
     try:
-        start_date = datetime.utcnow() - timedelta(days=days)
+        start_date = get_utc_now() - timedelta(days=days)
         
         # All tasks in period
         all_tasks = db.query(Task).filter(
             Task.user_id == user_id,
-            Task.created_at >= start_date
+            Task.created_at >= start_date  # type: ignore[operator]
         ).all()
         
         # Completed tasks in period
         completed = [t for t in all_tasks if t.is_completed]
         
         # Overdue tasks
-        now = datetime.utcnow()
+        now = get_utc_now()
         overdue = [
             t for t in all_tasks
-            if not t.is_completed and t.due_date and t.due_date < now
+            if not t.is_completed and t.due_date and t.due_date < now  # type: ignore[operator]
         ]
         
         # Calculate average completion time
         completion_times = []
         for task in completed:
-            if task.completed_at and task.created_at:
-                delta = (task.completed_at - task.created_at).total_seconds() / 3600  # hours
-                completion_times.append(delta)
+            if task.completed_at is not None and task.created_at is not None:
+                # Convert both to datetime for subtraction
+                completed_dt = task.completed_at if isinstance(task.completed_at, datetime) else task.completed_at
+                created_dt = task.created_at if isinstance(task.created_at, datetime) else task.created_at
+                time_diff = (completed_dt - created_dt).total_seconds() / 3600  # type: ignore[operator]
+                completion_times.append(time_diff)
         
         avg_completion_time = sum(completion_times) / len(completion_times) if completion_times else 0
         
